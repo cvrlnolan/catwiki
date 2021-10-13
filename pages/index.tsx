@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
+import { SearchIcon } from "@heroicons/react/solid";
 import Navbar from "@/components/layout/navbar";
+import CatBox from "@/components/cats/catBox";
 
 const Home: NextPage = () => {
+  const [results, setResults] = useState<any>();
   return (
     <>
       <Head>
@@ -22,19 +25,67 @@ const Home: NextPage = () => {
               height: "500px",
             }}
           >
-            <div className="w-60">
-              <p className="text-white">CatWiki</p>
-              <p className="text-white">
-                Get to know more about your cat breed
-              </p>
-              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:ring-2 focus:ring-blue-200 focus:outline-none focus:bg-white focus:border-blue-500" />
+            <div className="w-64 md:w-72">
+              <div className="space-y-4">
+                <p className="text-white">CatWiki</p>
+                <p className="text-white">
+                  Get to know more about your cat breed
+                </p>
+              </div>
+              <div className="mt-10">
+                <label
+                  htmlFor="breed"
+                  className="relative text-gray-400 focus-within:text-gray-600 block mb-5"
+                >
+                  <SearchIcon className="pointer-events-none w-6 h-6 absolute top-1/2 transform -translate-y-1/2 right-3" />
+                  <input
+                    name="breed"
+                    id="breed"
+                    placeholder="Search your breed"
+                    className="appearance-none border rounded-full h-12 w-full py-2 px-3 text-gray-700 leading-tight focus:ring-2 focus:ring-blue-200 focus:outline-none focus:bg-white focus:border-blue-500"
+                  />
+                </label>
+                <div className="bg-white rounded-2xl max-h-64 overflow-auto invisible md:visible divide-y">
+                  <div className="w-full p-3 cursor-pointer hover:bg-gray-200">
+                    <span>No results found.</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div
-            className="flex p-6 w-full bg-yellow-50 rounded-2xl rounded-t-none"
-            style={{ height: "500px" }}
-          >
-            <p className="text-center">Most Searched Breeds</p>
+          <div className="block p-6 w-full bg-indigo-50 rounded-2xl rounded-t-none space-y-10">
+            <p className="">Most Searched Breeds</p>
+            <div className="flex flex-wrap justify-between">
+              <p>66+ Breeds for you to discover</p>
+              <a href="#">See More+</a>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[...Array(4)].map((e, i) => (
+                <CatBox key={i} />
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-between p-6">
+          <div className="block space-y-10 w-2/5">
+            <div>
+              <p className="font-extrabold">Why Should You Have A Cat?</p>
+            </div>
+            <div>
+              <p className="font-thin tracking-tight">
+                Having a cat around you can trigger the release of calming
+                chemicals in your body which lower your stress and anxiety
+                levels
+              </p>
+            </div>
+            <div>
+              <p className="font-semibold">Read More</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-2.5 w-1/2">
+            {[...Array(3)].map((e, i) => (
+              <CatBox key={i} />
+            ))}
           </div>
         </div>
         <footer className="bottom-0 my-3">
