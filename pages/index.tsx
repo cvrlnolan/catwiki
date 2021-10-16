@@ -1,12 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { SearchIcon } from "@heroicons/react/solid";
+import { Dialog, Transition } from "@headlessui/react";
 import Navbar from "@/components/layout/navbar";
+import GridPhoto from "@/components/layout/gridPhoto";
 import CatBox from "@/components/cats/catBox";
 
 const Home: NextPage = () => {
   const [results, setResults] = useState<any>();
+
+  let [isOpen, setIsOpen] = useState(false);
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
   return (
     <>
       <Head>
@@ -43,6 +57,7 @@ const Home: NextPage = () => {
                     id="breed"
                     placeholder="Search your breed"
                     className="appearance-none border rounded-full h-12 w-full py-2 px-3 text-gray-700 leading-tight focus:ring-2 focus:ring-blue-200 focus:outline-none focus:bg-white focus:border-blue-500"
+                    onClick={() => openModal()}
                   />
                 </label>
                 <div className="bg-white rounded-2xl max-h-64 overflow-auto invisible md:visible divide-y">
@@ -57,7 +72,9 @@ const Home: NextPage = () => {
             <p className="">Most Searched Breeds</p>
             <div className="flex flex-wrap justify-between">
               <p>66+ Breeds for you to discover</p>
-              <a href="#">See More+</a>
+              <Link href="/breed/searched" passHref>
+                <a className="cursor-pointer">See More+</a>
+              </Link>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[...Array(4)].map((e, i) => (
@@ -84,25 +101,73 @@ const Home: NextPage = () => {
           </div>
           <div className="grid grid-cols-2 gap-2.5 w-1/2">
             {[...Array(3)].map((e, i) => (
-              <CatBox key={i} />
+              <GridPhoto key={i} />
             ))}
           </div>
         </div>
-        <footer className="bottom-0 my-3">
-          <div className="flex justify-center mb-0">
-            <p className="text-center font-mono tracking-tight">
-              Designed & Developped by{" "}
-              <a
-                href="https://carlnolan.lootyclub.com"
-                target="_blank"
-                rel="noreferrer"
-                className="text-blue-400 hover:text-blue-600 transition"
+        <Transition appear show={isOpen} as={Fragment}>
+          <Dialog
+            as="div"
+            className="fixed inset-0 z-10 overflow-y-auto"
+            onClose={closeModal}
+          >
+            <div className="min-h-screen px-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
               >
-                Carl Nolan.
-              </a>
-            </p>
-          </div>
-        </footer>
+                <Dialog.Overlay className="fixed inset-0" />
+              </Transition.Child>
+
+              {/* This element is to trick the browser into centering the modal contents. */}
+              <span
+                className="inline-block h-screen align-middle"
+                aria-hidden="true"
+              >
+                &#8203;
+              </span>
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                  <Dialog.Title
+                    as="h3"
+                    className="text-lg font-medium leading-6 text-gray-900"
+                  >
+                    Payment successful
+                  </Dialog.Title>
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500">
+                      Your payment has been successfully submitted. We’ve sent
+                      you an email with all of the details of your order.
+                    </p>
+                  </div>
+
+                  <div className="mt-4">
+                    <button
+                      type="button"
+                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                      onClick={closeModal}
+                    >
+                      Got it, thanks!
+                    </button>
+                  </div>
+                </div>
+              </Transition.Child>
+            </div>
+          </Dialog>
+        </Transition>
       </Navbar>
     </>
   );
