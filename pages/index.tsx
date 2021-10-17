@@ -4,6 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { SearchIcon } from "@heroicons/react/solid";
 import { Dialog, Transition } from "@headlessui/react";
+import { useMediaQuery } from "react-responsive";
 import Navbar from "@/components/layout/navbar";
 import GridPhoto from "@/components/layout/gridPhoto";
 import CatBox from "@/components/cats/catBox";
@@ -21,6 +22,8 @@ const Home: NextPage = () => {
     setIsOpen(true);
   };
 
+  const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
+
   return (
     <>
       <Head>
@@ -36,7 +39,7 @@ const Home: NextPage = () => {
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
               position: "relative",
-              height: "500px",
+              height: isMobile ? "250px" : "500px",
             }}
           >
             <div className="w-64 md:w-72">
@@ -47,9 +50,15 @@ const Home: NextPage = () => {
                 </p>
               </div>
               <div className="mt-10">
+                <button
+                  className="flex p-4 bg-white rounded-full hover:bg-gray-100 md:invisible"
+                  onClick={() => openModal()}
+                >
+                  Search <SearchIcon className="w-4 h-4 my-auto ml-2" />
+                </button>
                 <label
                   htmlFor="breed"
-                  className="relative text-gray-400 focus-within:text-gray-600 block mb-5"
+                  className="relative text-gray-400 focus-within:text-gray-600 block mb-5 invisible md:visible"
                 >
                   <SearchIcon className="pointer-events-none w-6 h-6 absolute top-1/2 transform -translate-y-1/2 right-3" />
                   <input
@@ -57,7 +66,6 @@ const Home: NextPage = () => {
                     id="breed"
                     placeholder="Search your breed"
                     className="appearance-none border rounded-full h-12 w-full py-2 px-3 text-gray-700 leading-tight focus:ring-2 focus:ring-blue-200 focus:outline-none focus:bg-white focus:border-blue-500"
-                    onClick={() => openModal()}
                   />
                 </label>
                 <div className="bg-white rounded-2xl max-h-64 overflow-auto invisible md:visible divide-y">
@@ -140,18 +148,37 @@ const Home: NextPage = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                <div className="inline-block w-full h-64 max-w-md p-6 my-8 overflow-auto text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                   <Dialog.Title
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    Payment successful
+                    Search Breed
                   </Dialog.Title>
                   <div className="mt-2">
-                    <p className="text-sm text-gray-500">
-                      Your payment has been successfully submitted. We’ve sent
-                      you an email with all of the details of your order.
-                    </p>
+                    <label
+                      htmlFor="breed"
+                      className="relative text-gray-400 focus-within:text-gray-600 block mb-5"
+                    >
+                      <SearchIcon className="pointer-events-none w-4 h-4 absolute top-1/2 transform -translate-y-1/2 right-3" />
+                      <input
+                        name="breed"
+                        id="breed"
+                        placeholder="Search your breed"
+                        className="appearance-none border rounded-full h-10 w-full py-2 px-3 text-gray-700 leading-tight focus:ring-2 focus:ring-blue-200 focus:outline-none focus:bg-white focus:border-blue-500"
+                      />
+                    </label>
+                  </div>
+
+                  <div className="my-2">
+                    <div
+                      className="w-full p-3 cursor-pointer rounded-lg hover:bg-gray-100"
+                      onClick={() => {}}
+                    >
+                      <span className="text-thin tracking-tight">
+                        American Prush
+                      </span>
+                    </div>
                   </div>
 
                   <div className="mt-4">
@@ -160,7 +187,7 @@ const Home: NextPage = () => {
                       className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                       onClick={closeModal}
                     >
-                      Got it, thanks!
+                      Close
                     </button>
                   </div>
                 </div>
