@@ -19,7 +19,11 @@ const CharacterRating = (char: Character) => {
                 key={i}
                 className="w-3.5 md:w-16 h-3.5 bg-gray-200 rounded-full my-auto"
               >
-                <div className="w-full h-full rounded-full"></div>
+                <div
+                  className={`${
+                    i < (char.value as number) ? "bg-gray-600" : ""
+                  } w-full h-full rounded-full`}
+                ></div>
               </div>
             ))}
           </div>

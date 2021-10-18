@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
@@ -15,6 +15,8 @@ import ModalListItem from "@/components/layout/search/modalListItem";
 const Home: NextPage = () => {
   const [results, setResults] = useState<any>();
 
+  const [searched, setSearched] = useState<any>([]);
+
   let [isOpen, setIsOpen] = useState(false);
 
   const closeModal = () => {
@@ -29,13 +31,24 @@ const Home: NextPage = () => {
 
   const search = async (value: string) => {
     try {
-      const response = await axios.post("/api/cats/search", { value });
+      const response = await axios.post<any>("/api/cats/search", { value });
       const data = await response.data;
       setResults(data);
+      if (data.length > 0) {
+        localStorage.setItem("most_searched", JSON.stringify(data));
+      }
     } catch (e: any) {
       console.log(e.message);
     }
   };
+
+  useEffect(() => {
+    const most_searched = localStorage.getItem("most_searched");
+    const selectedCats = JSON.parse(most_searched as string).slice(0, 4);
+    // setSearched(JSON.parse(searched as string));
+    setSearched(selectedCats);
+    // console.log(selectedCats);
+  }, []);
 
   return (
     <>
@@ -103,9 +116,11 @@ const Home: NextPage = () => {
               </Link>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[...Array(4)].map((e, i) => (
-                <CatBox key={i} />
-              ))}
+              {searched &&
+                searched.length > 0 &&
+                searched.map((cat: any, i: number) => (
+                  <CatBox key={i} cat={cat} />
+                ))}
             </div>
           </div>
         </div>
