@@ -2,12 +2,15 @@ import React, { useState, Fragment } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import axios from "axios";
 import { SearchIcon } from "@heroicons/react/solid";
 import { Dialog, Transition } from "@headlessui/react";
 import { useMediaQuery } from "react-responsive";
 import Navbar from "@/components/layout/navbar";
 import GridPhoto from "@/components/layout/gridPhoto";
 import CatBox from "@/components/cats/catBox";
+import ListItem from "@/components/layout/search/listItem";
+import ModalListItem from "@/components/layout/search/modalListItem";
 
 const Home: NextPage = () => {
   const [results, setResults] = useState<any>();
@@ -23,6 +26,16 @@ const Home: NextPage = () => {
   };
 
   const isMobile = useMediaQuery({ query: "(max-width: 767px)" });
+
+  const search = async (value: string) => {
+    try {
+      const response = await axios.post("/api/cats/search", { value });
+      const data = await response.data;
+      setResults(data);
+    } catch (e: any) {
+      console.log(e.message);
+    }
+  };
 
   return (
     <>
@@ -66,12 +79,17 @@ const Home: NextPage = () => {
                     id="breed"
                     placeholder="Search your breed"
                     className="appearance-none border rounded-full h-12 w-full py-2 px-3 text-gray-700 leading-tight focus:ring-2 focus:ring-blue-200 focus:outline-none focus:bg-white focus:border-blue-500"
+                    onChange={(e) => {
+                      search(e.target.value);
+                    }}
                   />
                 </label>
-                <div className="bg-white rounded-2xl max-h-64 overflow-auto invisible md:visible divide-y">
-                  <div className="w-full p-3 cursor-pointer hover:bg-gray-200">
-                    <span>No results found.</span>
-                  </div>
+                <div className="bg-white rounded-2xl max-h-56 overflow-auto invisible md:visible divide-y">
+                  {results &&
+                    results.length > 0 &&
+                    results.map((cat: any, i: number) => (
+                      <ListItem key={i} name={cat.name} />
+                    ))}
                 </div>
               </div>
             </div>
@@ -166,19 +184,19 @@ const Home: NextPage = () => {
                         id="breed"
                         placeholder="Search your breed"
                         className="appearance-none border rounded-full h-10 w-full py-2 px-3 text-gray-700 leading-tight focus:ring-2 focus:ring-blue-200 focus:outline-none focus:bg-white focus:border-blue-500"
+                        onChange={(e) => {
+                          search(e.target.value);
+                        }}
                       />
                     </label>
                   </div>
 
                   <div className="my-2">
-                    <div
-                      className="w-full p-3 cursor-pointer rounded-lg hover:bg-gray-100"
-                      onClick={() => {}}
-                    >
-                      <span className="text-thin tracking-tight">
-                        American Prush
-                      </span>
-                    </div>
+                    {results &&
+                      results.length > 0 &&
+                      results.map((cat: any, i: number) => (
+                        <ModalListItem key={i} name={cat.name} />
+                      ))}
                   </div>
 
                   <div className="mt-4">
