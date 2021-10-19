@@ -11,8 +11,8 @@ const CatBreed = (cat: Breed) => {
   const imgUrl = "https://cdn2.thecatapi.com/images/" + cat.img_id + ".jpg";
   return (
     <>
-      <div className="flex flex-wrap lg:flex-nowrap w-full lg:px-8 space-y-4 lg:space-y-0">
-        <div className="flex justify-center w-full lg:w-auto h-56 md:mx-auto relative">
+      <div className="breed_wrapper">
+        <div className="breed_img_div">
           <Image
             src={imgUrl}
             alt="cat_pic"

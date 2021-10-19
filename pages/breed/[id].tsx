@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import useSWR from "swr";
 import Image from "next/image";
-import GridPhoto from "@/components/layout/gridPhoto";
 import Navbar from "@/components/layout/navbar";
 import CharacterRating from "@/components/layout/characterRating";
 
@@ -43,8 +42,8 @@ const BreedPage: NextPage = () => {
         <title>CatWiki | {cat.name}</title>
       </Head>
       <Navbar>
-        <div className="flex flex-wrap lg:flex-nowrap w-full space-y-4 lg:space-y-0 justify-between">
-          <div className="flex justify-center w-full md:w-1/2 md:mx-auto h-80 relative">
+        <div className="breed_page_container">
+          <div className="breed_page_img">
             <Image
               src={imgUrl}
               alt="cat_pic"

@@ -7,10 +7,10 @@ import { SearchIcon } from "@heroicons/react/solid";
 import { Dialog, Transition } from "@headlessui/react";
 import { useMediaQuery } from "react-responsive";
 import Navbar from "@/components/layout/navbar";
-import GridPhoto from "@/components/layout/gridPhoto";
 import CatBox from "@/components/cats/catBox";
 import ListItem from "@/components/layout/search/listItem";
 import ModalListItem from "@/components/layout/search/modalListItem";
+import GridDisplay from "@/components/layout/gridDisplay";
 
 const Home: NextPage = () => {
   const [results, setResults] = useState<any>();
@@ -77,27 +77,24 @@ const Home: NextPage = () => {
               </div>
               <div className="mt-10">
                 <button
-                  className="flex p-4 bg-white rounded-full hover:bg-gray-100 md:invisible"
+                  className="mobile_search_button"
                   onClick={() => openModal()}
                 >
                   Search <SearchIcon className="w-4 h-4 my-auto ml-2" />
                 </button>
-                <label
-                  htmlFor="breed"
-                  className="relative text-gray-400 focus-within:text-gray-600 block mb-5 invisible md:visible"
-                >
-                  <SearchIcon className="pointer-events-none w-6 h-6 absolute top-1/2 transform -translate-y-1/2 right-3" />
+                <label htmlFor="breed" className="input_label">
+                  <SearchIcon className="search_icon" />
                   <input
                     name="breed"
                     id="breed"
                     placeholder="Search your breed"
-                    className="appearance-none border rounded-full h-12 w-full py-2 px-3 text-gray-700 leading-tight focus:ring-2 focus:ring-blue-200 focus:outline-none focus:bg-white focus:border-blue-500"
+                    className="search_input"
                     onChange={(e) => {
                       search(e.target.value);
                     }}
                   />
                 </label>
-                <div className="bg-white rounded-2xl max-h-56 overflow-auto invisible md:visible divide-y">
+                <div className="search_results_container">
                   {results &&
                     results.length > 0 &&
                     results.map((cat: any, i: number) => (
@@ -107,7 +104,7 @@ const Home: NextPage = () => {
               </div>
             </div>
           </div>
-          <div className="block p-6 w-full bg-indigo-50 rounded-2xl rounded-t-none space-y-10">
+          <div className="bottom_div_container">
             <p className="">Most Searched Breeds</p>
             <div className="flex flex-wrap justify-between">
               <p>66+ Breeds for you to discover</p>
@@ -124,13 +121,13 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
-        <div className="flex justify-between p-6">
-          <div className="block space-y-10 w-2/5">
+        <div className="block md:flex justify-between p-6">
+          <div className="block space-y-10 w-full md:w-2/5">
             <div>
               <p className="font-extrabold">Why Should You Have A Cat?</p>
             </div>
             <div>
-              <p className="font-thin tracking-tight">
+              <p className="tracking-tight">
                 Having a cat around you can trigger the release of calming
                 chemicals in your body which lower your stress and anxiety
                 levels
@@ -140,11 +137,7 @@ const Home: NextPage = () => {
               <p className="font-semibold">Read More</p>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-2.5 w-1/2">
-            {[...Array(3)].map((e, i) => (
-              <GridPhoto key={i} />
-            ))}
-          </div>
+          <GridDisplay />
         </div>
         <Transition appear show={isOpen} as={Fragment}>
           <Dialog
@@ -181,7 +174,7 @@ const Home: NextPage = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <div className="inline-block w-full h-64 max-w-md p-6 my-8 overflow-auto text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                <div className="modal_container">
                   <Dialog.Title
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
@@ -189,16 +182,13 @@ const Home: NextPage = () => {
                     Search Breed
                   </Dialog.Title>
                   <div className="mt-2">
-                    <label
-                      htmlFor="breed"
-                      className="relative text-gray-400 focus-within:text-gray-600 block mb-5"
-                    >
-                      <SearchIcon className="pointer-events-none w-4 h-4 absolute top-1/2 transform -translate-y-1/2 right-3" />
+                    <label htmlFor="breed" className="modal_input_label">
+                      <SearchIcon className="search_icon" />
                       <input
                         name="breed"
                         id="breed"
                         placeholder="Search your breed"
-                        className="appearance-none border rounded-full h-10 w-full py-2 px-3 text-gray-700 leading-tight focus:ring-2 focus:ring-blue-200 focus:outline-none focus:bg-white focus:border-blue-500"
+                        className="search_input"
                         onChange={(e) => {
                           search(e.target.value);
                         }}
@@ -217,7 +207,7 @@ const Home: NextPage = () => {
                   <div className="mt-4">
                     <button
                       type="button"
-                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                      className="modal_close_button"
                       onClick={closeModal}
                     >
                       Close

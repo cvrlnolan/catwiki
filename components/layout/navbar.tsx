@@ -8,7 +8,7 @@ type Props = {
 const Navbar = ({ children }: Props) => {
   return (
     <>
-      <div className="flex flex-col min-h-screen w-full p-6 justify-between space-y-4">
+      <div className="main_container">
         <nav className="flex flex-wrap w-full p-2 order-first">
           <Link href="/" passHref>
             <div onClick={() => {}} className="flex w-2/5 cursor-pointer">

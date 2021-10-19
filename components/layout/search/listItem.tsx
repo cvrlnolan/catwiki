@@ -9,7 +9,10 @@ const ListItem = (cat: Cat) => {
   return (
     <>
       <Link href={`/breed/${cat.name}`} passHref>
-        <div className="w-full p-3 cursor-pointer hover:bg-gray-200">
+        <div
+          className="w-full p-3 cursor-pointer hover:bg-gray-200"
+          onClick={() => {}}
+        >
           <span>{cat.name}</span>
         </div>
       </Link>
