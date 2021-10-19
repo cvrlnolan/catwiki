@@ -44,10 +44,10 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     const most_searched = localStorage.getItem("most_searched");
-    const selectedCats = JSON.parse(most_searched as string).slice(0, 4);
-    // setSearched(JSON.parse(searched as string));
-    setSearched(selectedCats);
-    // console.log(selectedCats);
+    if (most_searched) {
+      const selectedCats = JSON.parse(most_searched as string).slice(0, 4);
+      setSearched(selectedCats);
+    }
   }, []);
 
   return (
